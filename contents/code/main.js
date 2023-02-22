@@ -1,12 +1,14 @@
+const PADDING = 20
+
 function newSlotPosition(workspace, client, numberXslots, numberYslots, x, y, xSlotToFill, ySlotToFill) {
     var maxArea = workspace.clientArea(KWin.MaximizeArea, client);
 
-    var newX = maxArea.x + Math.round(maxArea.width / numberXslots * x);
-    var newY = maxArea.y + Math.round(maxArea.height / numberYslots * y);
+    var newX = maxArea.x + Math.round(maxArea.width / numberXslots * x) + (x == 0 || x == numberXslots-1 ? PADDING : PADDING / 2 );
+    var newY = maxArea.y + Math.round(maxArea.height / numberYslots * y) + PADDING;
 
     // Width and height is calculated by finding where the window should end and subtracting where it should start
-    var clientWidth = Math.round(maxArea.width / numberXslots * (x + xSlotToFill)) - (newX - maxArea.x);
-    var clientHeight = Math.round(maxArea.height / numberYslots * (y + ySlotToFill)) - (newY - maxArea.y);
+    var clientWidth = Math.round(maxArea.width / numberXslots * (x + xSlotToFill)) - (newX - maxArea.x) - (x == 0 || x == numberXslots-1 ? PADDING : PADDING / 2 );
+    var clientHeight = Math.round(maxArea.height / numberYslots * (y + ySlotToFill)) - (newY - maxArea.y) - (PADDING);
 
     return [newX, newY, clientWidth, clientHeight]
 }
@@ -14,6 +16,7 @@ function newSlotPosition(workspace, client, numberXslots, numberYslots, x, y, xS
 function reposition(client, newX, newY, w, h) {
     client.frameGeometry = {
         x: newX,
+
         y: newY,
         width: w,
         height: h
@@ -273,4 +276,15 @@ registerShortcut("MoveWindowToCenter", "UltrawideWindows: Center Window", "ctrl+
 
 registerShortcut("MoveWindowToCenter1", "UltrawideWindows: Center Window (copy)", "alt+Num+5", function () {
     center(workspace)
+});
+
+
+registerShortcut("MoveWindowToFullLeft", "UltrawideWindows: Full Height - Left", "alt+Num+1", function () {
+    move(workspace, 3, 1, 0, 0, 1, 1)
+});
+registerShortcut("MoveWindowToFullMiddle", "UltrawideWindows: Full Height - Middle", "alt+Num+2", function () {
+    move(workspace, 3, 1, 1, 0, 1, 1)
+});
+registerShortcut("MoveWindowToFullRight", "UltrawideWindows: Full Height - Right", "alt+Num+3", function () {
+    move(workspace, 3, 1, 2, 0, 1, 1)
 });
