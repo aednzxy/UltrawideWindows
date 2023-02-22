@@ -7,7 +7,7 @@ function newSlotPosition(workspace, client, numberXslots, numberYslots, x, y, xS
     var newY = maxArea.y + Math.round(maxArea.height / numberYslots * y) + PADDING;
 
     // Width and height is calculated by finding where the window should end and subtracting where it should start
-    var clientWidth = Math.round(maxArea.width / numberXslots * (x + xSlotToFill)) - (newX - maxArea.x) - (x == 0 || x == numberXslots-1 ? PADDING : PADDING / 2 );
+    var clientWidth = Math.round(maxArea.width / numberXslots * (x + xSlotToFill)) - (newX - maxArea.x) - (x == 0 ? PADDING / 2 : x == numberXslots-1 ? PADDING : 0 );
     var clientHeight = Math.round(maxArea.height / numberYslots * (y + ySlotToFill)) - (newY - maxArea.y) - (PADDING);
 
     return [newX, newY, clientWidth, clientHeight]
